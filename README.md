@@ -18,6 +18,14 @@
 
 Also included: an executive **Overview dashboard** (live metrics, roadmap & investment framework, coalition ecosystem matrix) and a health endpoint.
 
+## Design language
+
+The interface is built to the standard expected of official bilateral programmes — the visual register of an international financial institution or treaty secretariat, not a consumer app:
+
+- **Palette** — Oxford navy (`#0C2340`), antique gold (`#B08D3E`), ivory paper (`#F7F5EF`), institutional green/crimson reserved for verification verdicts and classifications.
+- **Typography** — Playfair Display (display serif), Public Sans (the US federal government typeface) for UI, IBM Plex Mono for cryptographic digests.
+- **Document conventions** — engraved security-paper texture, double gold rules, Roman-numeral section index, square classification stamps (`PUBLIC / MEDIA / OFFICIAL / CRISIS`), country-code chips instead of emoji flags, small-caps letterspaced labels throughout.
+
 ## Quick start (local)
 
 ```bash

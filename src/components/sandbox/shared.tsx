@@ -5,14 +5,15 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { LucideIcon } from "lucide-react";
 
-export const CLASSIFICATION_STYLES: Record<
-  BulletinClassification,
-  string
-> = {
-  PUBLIC: "bg-emerald-100 text-emerald-800 border-emerald-300",
-  MEDIA: "bg-amber-100 text-amber-800 border-amber-300",
-  OFFICIAL: "bg-stone-200 text-stone-800 border-stone-300",
-  CRISIS: "bg-red-100 text-red-800 border-red-300",
+/* ── Document stamps ────────────────────────────────────────────────────────
+   Square, letterspaced, hatched-border classification chips — the visual
+   language of official registries. No rounded pills, no soft colours.     */
+
+const CLASSIFICATION_STYLES: Record<BulletinClassification, string> = {
+  PUBLIC: "border-verify/50 text-verify bg-verify-soft",
+  MEDIA: "border-gold/60 text-gold-ink bg-gold-soft",
+  OFFICIAL: "border-[#9AA3AE] text-[#3D4650] bg-[#F1F2F0]",
+  CRISIS: "border-alert/50 text-alert bg-alert-soft",
 };
 
 export function ClassificationBadge({
@@ -23,82 +24,78 @@ export function ClassificationBadge({
   className?: string;
 }) {
   return (
-    <Badge
-      variant="outline"
-      className={cn(CLASSIFICATION_STYLES[value], "font-semibold", className)}
+    <span
+      className={cn(
+        "inline-flex items-center border px-1.5 py-0.5 text-[9.5px] font-bold uppercase tracking-[0.18em]",
+        CLASSIFICATION_STYLES[value],
+        className
+      )}
     >
       {value}
-    </Badge>
-  );
-}
-
-export function CountryFlag({ country }: { country: Country }) {
-  return (
-    <span aria-hidden="true" className="text-base leading-none">
-      {country === "ZA" ? "🇿🇦" : "🇹🇷"}
     </span>
   );
 }
 
-export function CountryBadge({ country }: { country: Country }) {
+/* ── Country identification (replaces emoji flags) ────────────────────────── */
+
+const COUNTRY_META: Record<Country, { code: string; name: string; swatch: string }> = {
+  ZA: { code: "ZA", name: "South Africa", swatch: "bg-verify" },
+  TR: { code: "TR", name: "Türkiye", swatch: "bg-alert" },
+};
+
+export function CountryFlag({ country }: { country: Country }) {
+  const meta = COUNTRY_META[country];
   return (
-    <Badge
-      variant="outline"
-      className={cn(
-        "gap-1 font-medium",
-        country === "ZA"
-          ? "border-emerald-300 text-emerald-800"
-          : "border-red-300 text-red-700"
-      )}
-    >
-      <CountryFlag country={country} />
-      {country === "ZA" ? "South Africa" : "Türkiye"}
-    </Badge>
+    <span
+      aria-hidden="true"
+      className={cn("inline-block h-2.5 w-2.5 shrink-0", meta.swatch)}
+    />
   );
 }
+
+export function CountryBadge({ country }: { country: Country }) {
+  const meta = COUNTRY_META[country];
+  return (
+    <span className="inline-flex items-center gap-1.5 border border-hairline bg-white px-1.5 py-0.5 text-[9.5px] font-bold uppercase tracking-[0.16em] text-ink">
+      <CountryFlag country={country} />
+      {meta.name}
+    </span>
+  );
+}
+
+/* ── Registry metrics ─────────────────────────────────────────────────────── */
 
 export function StatCard({
   icon: Icon,
   label,
   value,
   hint,
-  tone = "default",
 }: {
   icon: LucideIcon;
   label: string;
   value: number | string;
   hint?: string;
-  tone?: "default" | "gold" | "red" | "green";
 }) {
-  const tones = {
-    default: "text-stone-700 bg-stone-100",
-    gold: "text-amber-700 bg-amber-100",
-    red: "text-red-700 bg-red-100",
-    green: "text-emerald-700 bg-emerald-100",
-  } as const;
-
   return (
-    <Card>
+    <Card className="border-hairline bg-card">
       <CardContent className="p-4 sm:p-5">
-        <div className="flex items-start gap-3">
-          <div
-            className={cn(
-              "rounded-lg p-2 shrink-0",
-              tones[tone]
-            )}
-          >
-            <Icon className="h-5 w-5" aria-hidden="true" />
-          </div>
+        <div aria-hidden="true" className="mb-3 h-[2px] w-8 bg-gold" />
+        <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
-            <p className="text-xs font-medium uppercase tracking-wide text-stone-500">
+            <p className="text-[9.5px] font-bold uppercase tracking-[0.2em] text-ink-soft">
               {label}
             </p>
-            <p className="mt-0.5 text-2xl font-bold tabular-nums text-stone-900">
+            <p className="mt-1.5 font-serif text-3xl font-semibold tabular-nums leading-none text-navy">
               {value}
             </p>
             {hint ? (
-              <p className="mt-0.5 text-xs text-stone-500 line-clamp-2">{hint}</p>
+              <p className="mt-2 text-[11px] leading-snug text-ink-soft line-clamp-2">
+                {hint}
+              </p>
             ) : null}
+          </div>
+          <div className="shrink-0 border border-hairline p-1.5 text-navy-mid">
+            <Icon className="h-4 w-4" aria-hidden="true" strokeWidth={1.75} />
           </div>
         </div>
       </CardContent>
@@ -108,10 +105,10 @@ export function StatCard({
 
 export function StatCardSkeleton() {
   return (
-    <Card>
-      <CardContent className="p-4 sm:p-5 flex items-start gap-3">
-        <Skeleton className="h-9 w-9 rounded-lg" />
-        <div className="space-y-2 flex-1">
+    <Card className="border-hairline bg-card">
+      <CardContent className="flex items-start gap-3 p-4 sm:p-5">
+        <Skeleton className="h-9 w-9" />
+        <div className="flex-1 space-y-2">
           <Skeleton className="h-3 w-24" />
           <Skeleton className="h-7 w-16" />
         </div>
@@ -119,6 +116,8 @@ export function StatCardSkeleton() {
     </Card>
   );
 }
+
+/* ── Section heading ──────────────────────────────────────────────────────── */
 
 export function SectionHeading({
   eyebrow,
@@ -134,76 +133,58 @@ export function SectionHeading({
   return (
     <div className={cn("max-w-2xl", align === "center" && "mx-auto text-center")}>
       {eyebrow ? (
-        <p className="text-xs font-bold uppercase tracking-widest text-emerald-700">
+        <p className="flex items-center gap-2.5 text-[10px] font-bold uppercase tracking-[0.24em] text-gold-ink">
+          <span aria-hidden="true" className="h-px w-6 bg-gold" />
           {eyebrow}
         </p>
       ) : null}
-      <h2 className="mt-1 text-xl sm:text-2xl font-bold tracking-tight text-stone-900">
+      <h2 className="mt-2 font-serif text-xl font-semibold tracking-tight text-navy sm:text-2xl">
         {title}
       </h2>
       {description ? (
-        <p className="mt-2 text-sm text-stone-600 leading-relaxed">{description}</p>
+        <p className="mt-2.5 text-sm leading-relaxed text-ink-soft">{description}</p>
       ) : null}
     </div>
   );
 }
 
+/* ── Pillar cards (Roman numeration, treaty style) ────────────────────────── */
+
 export function PillarCard({
   icon: Icon,
-  pillar,
+  numeral,
   title,
   points,
-  accent,
 }: {
   icon: LucideIcon;
-  pillar: string;
+  numeral: string;
   title: string;
   points: string[];
-  accent: "green" | "red";
 }) {
-  const accents = {
-    green: {
-      chip: "bg-emerald-50 text-emerald-800 border-emerald-200",
-      icon: "bg-emerald-100 text-emerald-700",
-    },
-    red: {
-      chip: "bg-red-50 text-red-800 border-red-200",
-      icon: "bg-red-100 text-red-700",
-    },
-  } as const;
-  const a = accents[accent];
-
   return (
-    <Card className="h-full">
+    <Card className="h-full border-hairline bg-card">
       <CardContent className="p-6">
-        <div className="flex items-center gap-3">
-          <div className={cn("rounded-lg p-2.5", a.icon)}>
-            <Icon className="h-5 w-5" aria-hidden="true" />
-          </div>
-          <div>
-            <p
-              className={cn(
-                "text-[11px] font-bold uppercase tracking-wider border rounded px-1.5 py-0.5 inline-block",
-                a.chip
-              )}
-            >
-              {pillar}
-            </p>
-            <h3 className="mt-1 text-base font-bold text-stone-900">{title}</h3>
+        <div className="flex items-start justify-between gap-3">
+          <span className="bg-navy px-2 py-1 text-[9.5px] font-bold uppercase tracking-[0.2em] text-[#F2EFE7]">
+            {numeral}
+          </span>
+          <div className="border border-hairline p-1.5 text-navy-mid">
+            <Icon className="h-4 w-4" aria-hidden="true" strokeWidth={1.75} />
           </div>
         </div>
-        <ul className="mt-4 space-y-2">
+        <h3 className="mt-4 font-serif text-lg font-semibold leading-snug text-navy">
+          {title}
+        </h3>
+        <div aria-hidden="true" className="mt-3 h-px w-10 bg-gold" />
+        <ul className="mt-4 space-y-3">
           {points.map((p) => (
             <li
               key={p}
-              className="flex gap-2 text-sm text-stone-600 leading-relaxed"
+              className="flex gap-2.5 text-sm leading-relaxed text-ink-soft"
             >
               <span
                 aria-hidden="true"
-                className={cn(
-                  "mt-2 h-1.5 w-1.5 rounded-full shrink-0",
-                  accent === "green" ? "bg-emerald-500" : "bg-red-500"
-                )}
+                className="mt-[7px] h-1.5 w-1.5 shrink-0 bg-gold"
               />
               {p}
             </li>

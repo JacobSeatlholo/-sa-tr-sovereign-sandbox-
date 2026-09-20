@@ -4,15 +4,14 @@ import { useState } from "react";
 import { toast } from "sonner";
 import {
   AlertTriangle,
-  BrainCircuit,
   FileText,
+  Landmark,
   Languages,
   ListChecks,
   Loader2,
   ScrollText,
   Tag,
 } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -36,12 +35,12 @@ import { SAMPLE_TR_POLICY } from "@/lib/overview-content";
 import type { PolicyAnalysis, TranslateDirection } from "@/lib/types";
 
 const CATEGORY_STYLE: Record<string, string> = {
-  governance: "bg-stone-200 text-stone-800",
-  trade: "bg-emerald-100 text-emerald-800",
-  technology: "bg-amber-100 text-amber-800",
-  education: "bg-red-100 text-red-800",
-  security: "bg-red-100 text-red-900",
-  other: "bg-stone-100 text-stone-700",
+  governance: "bg-navy text-[#F2EFE7]",
+  trade: "bg-verify-soft text-verify border border-verify/40",
+  technology: "bg-gold-soft text-gold-ink border border-gold/50",
+  education: "bg-[#F1F2F0] text-[#3D4650] border border-[#9AA3AE]",
+  security: "bg-alert-soft text-alert border border-alert/40",
+  other: "bg-[#F1F2F0] text-[#3D4650] border border-[#9AA3AE]",
 };
 
 export function PolicyIntelligence() {
@@ -89,8 +88,8 @@ export function PolicyIntelligence() {
     <div className="space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-base">
-            <BrainCircuit className="h-5 w-5 text-emerald-700" aria-hidden="true" />
+          <CardTitle className="flex items-center gap-2.5 font-serif text-lg font-semibold text-navy">
+            <Landmark className="h-5 w-5 text-navy-mid" aria-hidden="true" strokeWidth={1.75} />
             Diplomatic Policy Indexer
           </CardTitle>
           <CardDescription>
@@ -139,7 +138,7 @@ export function PolicyIntelligence() {
             />
             <p
               className={`text-xs ${
-                charCount > 8000 ? "text-red-600" : "text-stone-500"
+                charCount > 8000 ? "text-alert font-semibold" : "text-ink-soft"
               }`}
             >
               {charCount.toLocaleString()} / 8,000 characters
@@ -149,7 +148,7 @@ export function PolicyIntelligence() {
           <Button
             onClick={analyze}
             disabled={loading || charCount < 20 || charCount > 8000}
-            className="bg-emerald-700 text-white hover:bg-emerald-800"
+            className="px-5 font-bold uppercase tracking-[0.14em]"
           >
             {loading ? (
               <>
@@ -168,9 +167,9 @@ export function PolicyIntelligence() {
 
       {loading ? (
         <div className="space-y-4">
-          <Skeleton className="h-40 w-full rounded-xl" />
-          <Skeleton className="h-24 w-full rounded-xl" />
-          <Skeleton className="h-48 w-full rounded-xl" />
+          <Skeleton className="h-40 w-full" />
+          <Skeleton className="h-24 w-full" />
+          <Skeleton className="h-48 w-full" />
         </div>
       ) : null}
 
@@ -178,18 +177,18 @@ export function PolicyIntelligence() {
         <div className="space-y-4">
           <Card>
             <CardHeader className="pb-3">
-              <CardTitle className="flex items-center gap-2 text-base">
-                <ScrollText className="h-5 w-5 text-emerald-700" aria-hidden="true" />
-                English rendition
+              <CardTitle className="flex items-center gap-2.5 font-serif text-lg font-semibold text-navy">
+                <ScrollText className="h-5 w-5 text-navy-mid" aria-hidden="true" strokeWidth={1.75} />
+                Official rendition
                 {degraded ? (
-                  <Badge variant="outline" className="border-amber-300 text-amber-700">
-                    degraded parse
-                  </Badge>
+                  <span className="border border-gold/60 bg-gold-soft px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-[0.16em] text-gold-ink">
+                    Degraded parse
+                  </span>
                 ) : null}
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="whitespace-pre-wrap text-sm leading-relaxed text-stone-800">
+              <p className="whitespace-pre-wrap text-sm leading-[1.85] text-ink">
                 {result.translation}
               </p>
             </CardContent>
@@ -198,10 +197,12 @@ export function PolicyIntelligence() {
           {result.summary ? (
             <Card>
               <CardHeader className="pb-3">
-                <CardTitle className="text-base">Executive summary</CardTitle>
+                <CardTitle className="font-serif text-lg font-semibold text-navy">
+                Executive summary
+              </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-sm leading-relaxed text-stone-700">
+                <p className="text-sm leading-[1.85] text-ink-soft">
                   {result.summary}
                 </p>
               </CardContent>
@@ -211,8 +212,8 @@ export function PolicyIntelligence() {
           {result.commitments.length > 0 ? (
             <Card>
               <CardHeader className="pb-3">
-                <CardTitle className="flex items-center gap-2 text-base">
-                  <ListChecks className="h-5 w-5 text-emerald-700" aria-hidden="true" />
+                <CardTitle className="flex items-center gap-2.5 font-serif text-lg font-semibold text-navy">
+                  <ListChecks className="h-5 w-5 text-navy-mid" aria-hidden="true" strokeWidth={1.75} />
                   Structured commitments ({result.commitments.length})
                 </CardTitle>
                 <CardDescription>
@@ -224,30 +225,29 @@ export function PolicyIntelligence() {
                 {result.commitments.map((c, i) => (
                   <div
                     key={`${i}-${c.commitment.slice(0, 24)}`}
-                    className="rounded-lg border bg-stone-50 p-3"
+                    className="border border-hairline border-l-2 border-l-gold bg-paper p-3.5"
                   >
                     <div className="flex flex-wrap items-center gap-2">
-                      <Badge
+                      <span
                         className={
                           CATEGORY_STYLE[c.category] ?? CATEGORY_STYLE.other
                         }
                       >
-                        {c.category}
-                      </Badge>
+                        <span className="px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-[0.16em]">
+                          {c.category}
+                        </span>
+                      </span>
                       {c.deadline ? (
-                        <Badge
-                          variant="outline"
-                          className="border-amber-300 text-amber-800"
-                        >
-                          deadline: {c.deadline}
-                        </Badge>
+                        <span className="border border-gold/60 bg-gold-soft px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-[0.14em] text-gold-ink">
+                          Deadline: {c.deadline}
+                        </span>
                       ) : null}
                     </div>
-                    <p className="mt-2 text-sm leading-relaxed text-stone-800">
+                    <p className="mt-2.5 text-sm leading-[1.8] text-ink">
                       {c.commitment}
                     </p>
-                    <p className="mt-1.5 text-xs text-stone-500">
-                      <span className="font-semibold text-stone-600">Actor:</span>{" "}
+                    <p className="mt-1.5 text-xs text-ink-soft">
+                      <span className="font-bold uppercase tracking-[0.12em] text-ink">Actor:</span>{" "}
                       {c.actor}
                     </p>
                   </div>
@@ -261,20 +261,19 @@ export function PolicyIntelligence() {
               {result.domains.length > 0 ? (
                 <Card>
                   <CardHeader className="pb-3">
-                    <CardTitle className="flex items-center gap-2 text-base">
-                      <Tag className="h-4 w-4 text-amber-600" aria-hidden="true" />
+                    <CardTitle className="flex items-center gap-2.5 font-serif text-lg font-semibold text-navy">
+                      <Tag className="h-4 w-4 text-gold-ink" aria-hidden="true" strokeWidth={1.75} />
                       Policy domains
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="flex flex-wrap gap-2">
                     {result.domains.map((d) => (
-                      <Badge
+                      <span
                         key={d}
-                        variant="outline"
-                        className="border-emerald-300 text-emerald-800"
+                        className="border border-hairline bg-paper px-2 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-navy"
                       >
                         {d}
-                      </Badge>
+                      </span>
                     ))}
                   </CardContent>
                 </Card>
@@ -282,10 +281,11 @@ export function PolicyIntelligence() {
               {result.riskFlags.length > 0 ? (
                 <Card>
                   <CardHeader className="pb-3">
-                    <CardTitle className="flex items-center gap-2 text-base">
+                    <CardTitle className="flex items-center gap-2.5 font-serif text-lg font-semibold text-navy">
                       <AlertTriangle
-                        className="h-4 w-4 text-red-600"
+                        className="h-4 w-4 text-alert"
                         aria-hidden="true"
+                        strokeWidth={1.75}
                       />
                       Risk flags
                     </CardTitle>
@@ -296,11 +296,11 @@ export function PolicyIntelligence() {
                       {result.riskFlags.map((r) => (
                         <li
                           key={r}
-                          className="flex gap-2 text-sm text-stone-700 leading-relaxed"
+                          className="flex gap-2 text-sm leading-relaxed text-ink"
                         >
                           <span
                             aria-hidden="true"
-                            className="mt-2 h-1.5 w-1.5 rounded-full bg-red-500 shrink-0"
+                            className="mt-[7px] h-1.5 w-1.5 shrink-0 bg-alert"
                           />
                           {r}
                         </li>

@@ -17,6 +17,13 @@ import { TradeMatchmaker } from "@/components/sandbox/trade-matchmaker";
 
 type TabKey = "overview" | "policy" | "bulletins" | "trade";
 
+const NAV: { key: TabKey; numeral: string; label: string; icon: typeof Languages }[] = [
+  { key: "overview", numeral: "I", label: "Overview", icon: LayoutDashboard },
+  { key: "policy", numeral: "II", label: "Policy Intelligence", icon: Languages },
+  { key: "bulletins", numeral: "III", label: "Bulletin Verification", icon: ScanSearch },
+  { key: "trade", numeral: "IV", label: "Trade Matchmaker", icon: ArrowLeftRight },
+];
+
 export default function Home() {
   const [tab, setTab] = useState<TabKey>("overview");
 
@@ -26,45 +33,41 @@ export default function Home() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col bg-stone-100/60">
+    <div className="flex min-h-screen flex-col bg-paper">
       <Header />
-      <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 sm:py-8">
-        <Tabs
-          value={tab}
-          onValueChange={(v) => setTab(v as TabKey)}
-          className="w-full"
-        >
-          <TabsList className="mb-6 grid h-auto w-full grid-cols-2 gap-1 rounded-xl bg-white p-1.5 shadow-sm sm:grid-cols-4">
-            <TabsTrigger
-              value="overview"
-              className="flex-col gap-1 py-2.5 text-xs sm:flex-row sm:text-sm"
-            >
-              <LayoutDashboard className="h-4 w-4" aria-hidden="true" />
-              Overview
-            </TabsTrigger>
-            <TabsTrigger
-              value="policy"
-              className="flex-col gap-1 py-2.5 text-xs sm:flex-row sm:text-sm"
-            >
-              <Languages className="h-4 w-4" aria-hidden="true" />
-              Policy Intelligence
-            </TabsTrigger>
-            <TabsTrigger
-              value="bulletins"
-              className="flex-col gap-1 py-2.5 text-xs sm:flex-row sm:text-sm"
-            >
-              <ScanSearch className="h-4 w-4" aria-hidden="true" />
-              Bulletin Verification
-            </TabsTrigger>
-            <TabsTrigger
-              value="trade"
-              className="flex-col gap-1 py-2.5 text-xs sm:flex-row sm:text-sm"
-            >
-              <ArrowLeftRight className="h-4 w-4" aria-hidden="true" />
-              Trade Matchmaker
-            </TabsTrigger>
-          </TabsList>
 
+      <Tabs value={tab} onValueChange={(v) => setTab(v as TabKey)} className="flex flex-1 flex-col">
+        {/* Index bar — sticky, document-style */}
+        <div className="sticky top-0 z-40 border-b border-hairline bg-[#FBFAF5]/95 backdrop-blur-sm">
+          <div className="mx-auto w-full max-w-6xl px-4">
+            <TabsList className="grid h-auto w-full grid-cols-2 gap-0 rounded-none bg-transparent p-0 sm:grid-cols-4">
+              {NAV.map((item) => (
+                <TabsTrigger
+                  key={item.key}
+                  value={item.key}
+                  className="flex-col gap-1 rounded-none border-0 border-b-2 border-transparent px-2 py-3 text-[10px] font-semibold uppercase tracking-[0.14em] text-ink-soft shadow-none transition-colors hover:text-navy data-[state=active]:bg-transparent data-[state=active]:text-navy data-[state=active]:shadow-none sm:flex-row sm:gap-2 sm:text-[11px]"
+                >
+                  <span className="flex items-center gap-1.5">
+                    <span
+                      aria-hidden="true"
+                      className="hidden font-serif text-[13px] font-semibold text-gold-ink sm:inline"
+                    >
+                      {item.numeral}.
+                    </span>
+                    <item.icon
+                      className="h-3.5 w-3.5 sm:hidden"
+                      aria-hidden="true"
+                      strokeWidth={1.75}
+                    />
+                  </span>
+                  {item.label}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </div>
+        </div>
+
+        <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8 sm:py-10">
           <TabsContent value="overview" className="mt-0">
             <Overview onJump={handleJump} />
           </TabsContent>
@@ -77,8 +80,9 @@ export default function Home() {
           <TabsContent value="trade" className="mt-0">
             <TradeMatchmaker />
           </TabsContent>
-        </Tabs>
-      </main>
+        </main>
+      </Tabs>
+
       <Footer />
     </div>
   );

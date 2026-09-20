@@ -9,7 +9,6 @@ import {
   Handshake,
   Loader2,
   Search,
-  Sparkles,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -119,8 +118,8 @@ export function TradeMatchmaker() {
       {/* Matcher */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-base">
-            <Handshake className="h-5 w-5 text-emerald-700" aria-hidden="true" />
+          <CardTitle className="flex items-center gap-2.5 font-serif text-lg font-semibold text-navy">
+            <Handshake className="h-5 w-5 text-navy-mid" aria-hidden="true" strokeWidth={1.75} />
             Cross-Border SMME Matchmaker
           </CardTitle>
           <CardDescription>
@@ -134,7 +133,7 @@ export function TradeMatchmaker() {
             <Button
               size="sm"
               variant={mode === "registry" ? "default" : "outline"}
-              className={mode === "registry" ? "bg-emerald-700 hover:bg-emerald-800" : ""}
+              className="font-semibold uppercase tracking-[0.12em]"
               onClick={() => setMode("registry")}
             >
               Match from registry
@@ -142,7 +141,7 @@ export function TradeMatchmaker() {
             <Button
               size="sm"
               variant={mode === "need" ? "default" : "outline"}
-              className={mode === "need" ? "bg-emerald-700 hover:bg-emerald-800" : ""}
+              className="font-semibold uppercase tracking-[0.12em]"
               onClick={() => setMode("need")}
             >
               Post a trade need
@@ -159,7 +158,7 @@ export function TradeMatchmaker() {
                 <SelectContent className="max-h-72">
                   {companies.map((c) => (
                     <SelectItem key={c.id} value={c.id}>
-                      {c.country === "ZA" ? "🇿🇦" : "🇹🇷"} {c.name} — {c.role}
+                      {c.country} — {c.name} ({c.role})
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -181,7 +180,7 @@ export function TradeMatchmaker() {
           <Button
             onClick={runMatch}
             disabled={matching}
-            className="bg-emerald-700 text-white hover:bg-emerald-800"
+            className="px-5 font-bold uppercase tracking-[0.14em]"
           >
             {matching ? (
               <>
@@ -190,7 +189,7 @@ export function TradeMatchmaker() {
               </>
             ) : (
               <>
-                <Sparkles className="mr-2 h-4 w-4" aria-hidden="true" />
+                <Search className="mr-2 h-4 w-4" aria-hidden="true" />
                 Find counterparties
               </>
             )}
@@ -202,25 +201,27 @@ export function TradeMatchmaker() {
       {matching ? (
         <div className="grid gap-4 md:grid-cols-2">
           {[0, 1, 2, 3].map((i) => (
-            <Skeleton key={i} className="h-44 rounded-xl" />
+            <Skeleton key={i} className="h-44" />
           ))}
         </div>
       ) : null}
 
       {!matching && matches.length > 0 ? (
         <div className="space-y-4">
-          <div className="rounded-xl border bg-gradient-to-r from-emerald-50 to-white p-4">
-            <p className="text-sm font-semibold text-stone-800">
+          <div className="border border-hairline border-l-2 border-l-gold bg-card p-4">
+            <p className="text-[9.5px] font-bold uppercase tracking-[0.2em] text-gold-ink">
+              Ranked counterparties
+            </p>
+            <p className="mt-1.5 text-sm font-semibold text-navy">
               {source ? (
                 <>
-                  Ranked counterparties for{" "}
-                  <span className="text-emerald-800">{source.name}</span>
-                  <span className="ml-1 text-stone-500">
+                  {source.name}
+                  <span className="ml-1.5 font-normal text-ink-soft">
                     ({source.countryName} · {source.sector})
                   </span>
                 </>
               ) : (
-                <>Ranked counterparties for your trade need</>
+                <>For your posted trade need</>
               )}
             </p>
           </div>
@@ -231,22 +232,22 @@ export function TradeMatchmaker() {
                   {/* Rank + score */}
                   <div className="flex shrink-0 items-center gap-4 sm:flex-col sm:items-center sm:gap-2">
                     <div
-                      className={`flex h-11 w-11 items-center justify-center rounded-full text-base font-bold ${
+                      className={`flex h-11 w-11 items-center justify-center border font-serif text-lg font-semibold ${
                         i === 0
-                          ? "bg-amber-100 text-amber-800 ring-2 ring-amber-400"
-                          : "bg-stone-100 text-stone-600"
+                          ? "border-gold bg-gold text-navy-deep"
+                          : "border-hairline bg-paper text-navy-mid"
                       }`}
                       aria-label={`Rank ${i + 1}`}
                     >
                       {i + 1}
                     </div>
                     <div className="text-center">
-                      <p className="text-xl font-bold tabular-nums text-stone-900">
+                      <p className="font-serif text-2xl font-semibold tabular-nums leading-none text-navy">
                         {m.score}
-                        <span className="text-xs font-medium text-stone-400">/100</span>
+                        <span className="font-sans text-xs font-medium text-ink-soft">/100</span>
                       </p>
-                      <p className="text-[10px] uppercase tracking-wide text-stone-400">
-                        similarity
+                      <p className="mt-1 text-[9px] font-bold uppercase tracking-[0.18em] text-ink-soft">
+                        Similarity
                       </p>
                     </div>
                   </div>
@@ -259,33 +260,32 @@ export function TradeMatchmaker() {
                         {m.company.role}
                       </Badge>
                       {m.sectorOverlap ? (
-                        <Badge className="bg-emerald-100 text-emerald-800">
-                          sector match
-                        </Badge>
+                        <span className="border border-verify/40 bg-verify-soft px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-[0.16em] text-verify">
+                          Sector match
+                        </span>
                       ) : null}
                     </div>
-                    <h3 className="mt-2 text-base font-bold text-stone-900">
+                    <h3 className="mt-2 font-serif text-lg font-semibold text-navy">
                       {m.company.name}
                     </h3>
-                    <p className="text-xs text-stone-500">
+                    <p className="text-xs text-ink-soft">
                       {m.company.city} · {m.company.sector} · {m.company.employees} employees
                     </p>
-                    <p className="mt-2 line-clamp-2 text-sm text-stone-600">
+                    <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-ink-soft">
                       {m.company.description}
                     </p>
                     <div className="mt-3 flex flex-wrap gap-1.5">
                       {m.matchedTerms.slice(0, 8).map((t) => (
-                        <Badge
+                        <span
                           key={t}
-                          variant="outline"
-                          className="border-emerald-200 bg-emerald-50 text-[11px] text-emerald-800"
+                          className="border border-hairline bg-paper px-1.5 py-0.5 text-[10px] font-semibold tracking-[0.06em] text-navy"
                         >
                           {t}
-                        </Badge>
+                        </span>
                       ))}
                     </div>
-                    <p className="mt-2 flex items-center gap-1.5 text-xs text-stone-500">
-                      <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+                    <p className="mt-2 flex items-center gap-1.5 text-xs text-ink-soft">
+                      <ArrowRight className="h-3.5 w-3.5 text-gold-ink" aria-hidden="true" />
                       {m.rationale}
                     </p>
                     <div className="mt-3 flex flex-wrap gap-1.5">
@@ -293,7 +293,7 @@ export function TradeMatchmaker() {
                         <Badge
                           key={cert}
                           variant="outline"
-                          className="text-[11px] text-stone-600"
+                          className="text-[10px] uppercase tracking-[0.08em] text-ink-soft"
                         >
                           {cert}
                         </Badge>
@@ -311,11 +311,11 @@ export function TradeMatchmaker() {
       <div>
         <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <h3 className="flex items-center gap-2 text-lg font-bold text-stone-900">
-              <Building2 className="h-5 w-5 text-stone-600" aria-hidden="true" />
+            <h3 className="flex items-center gap-2.5 font-serif text-lg font-semibold text-navy">
+              <Building2 className="h-5 w-5 text-navy-mid" aria-hidden="true" strokeWidth={1.75} />
               Verified registry (demo data)
             </h3>
-            <p className="mt-1 text-xs text-stone-500">
+            <p className="mt-1 text-xs text-ink-soft">
               Illustrative Phase 1 entries — live OpenTender ZA / BlackBiz
               integration arrives in Phase 2.
             </p>
@@ -323,7 +323,7 @@ export function TradeMatchmaker() {
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
             <div className="relative">
               <Search
-                className="absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-stone-400"
+                className="absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-soft"
                 aria-hidden="true"
               />
               <Input
@@ -336,13 +336,13 @@ export function TradeMatchmaker() {
             </div>
             <Select value={countryFilter} onValueChange={setCountryFilter}>
               <SelectTrigger className="w-full sm:w-36" aria-label="Filter by country">
-                <Filter className="mr-1.5 h-3.5 w-3.5 text-stone-400" aria-hidden="true" />
+                <Filter className="mr-1.5 h-3.5 w-3.5 text-ink-soft" aria-hidden="true" />
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All countries</SelectItem>
-                <SelectItem value="ZA">🇿🇦 South Africa</SelectItem>
-                <SelectItem value="TR">🇹🇷 Türkiye</SelectItem>
+                <SelectItem value="ZA">ZA — South Africa</SelectItem>
+                <SelectItem value="TR">TR — Türkiye</SelectItem>
               </SelectContent>
             </Select>
             <Select value={sectorFilter} onValueChange={setSectorFilter}>
@@ -364,7 +364,7 @@ export function TradeMatchmaker() {
         {loadingList ? (
           <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {[0, 1, 2, 3, 4, 5].map((i) => (
-              <Skeleton key={i} className="h-40 rounded-xl" />
+              <Skeleton key={i} className="h-40" />
             ))}
           </div>
         ) : (
@@ -378,11 +378,11 @@ export function TradeMatchmaker() {
                       {c.role}
                     </Badge>
                   </div>
-                  <h4 className="mt-2 text-sm font-bold text-stone-900">{c.name}</h4>
-                  <p className="text-xs text-stone-500">
+                  <h4 className="mt-2 font-serif text-[15px] font-semibold text-navy">{c.name}</h4>
+                  <p className="text-xs text-ink-soft">
                     {c.city} · {c.sector}
                   </p>
-                  <p className="mt-2 line-clamp-3 text-xs leading-relaxed text-stone-600">
+                  <p className="mt-2 line-clamp-3 text-xs leading-relaxed text-ink-soft">
                     {c.description}
                   </p>
                   <div className="mt-3 flex flex-wrap gap-1">
@@ -390,13 +390,13 @@ export function TradeMatchmaker() {
                       <Badge
                         key={cap}
                         variant="outline"
-                        className="text-[10px] text-stone-600"
+                        className="text-[10px] text-ink-soft"
                       >
                         {cap}
                       </Badge>
                     ))}
                     {c.capabilities.length > 3 ? (
-                      <Badge variant="outline" className="text-[10px] text-stone-400">
+                      <Badge variant="outline" className="text-[10px] text-ink-soft">
                         +{c.capabilities.length - 3}
                       </Badge>
                     ) : null}
@@ -405,7 +405,7 @@ export function TradeMatchmaker() {
               </Card>
             ))}
             {filtered.length === 0 ? (
-              <p className="col-span-full py-8 text-center text-sm text-stone-500">
+              <p className="col-span-full py-8 text-center text-sm text-ink-soft">
                 No registry entries match the current filters.
               </p>
             ) : null}

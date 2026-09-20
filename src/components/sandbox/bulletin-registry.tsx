@@ -12,10 +12,8 @@ import {
   ScanSearch,
   ShieldAlert,
   ShieldCheck,
-  Unlock,
   XCircle,
 } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -214,19 +212,18 @@ export function BulletinRegistry() {
 
   return (
     <div className="space-y-6">
-      {/* Public key banner */}
-      <Card className="border-amber-200 bg-amber-50/60">
+      {/* Official verification key */}
+      <Card className="border-hairline border-l-2 border-l-gold bg-card">
         <CardContent className="p-4">
-          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-col gap-2.5 sm:flex-row sm:items-center sm:justify-between">
             <div className="min-w-0">
-              <p className="flex items-center gap-1.5 text-sm font-semibold text-stone-800">
-                <Unlock className="h-4 w-4 text-amber-600" aria-hidden="true" />
-                Official sandbox public key (Ed25519)
+              <p className="text-[9.5px] font-bold uppercase tracking-[0.2em] text-gold-ink">
+                Official verification key — Ed25519
               </p>
-              <p className="mt-0.5 text-xs text-stone-500">
+              <p className="mt-1 text-xs leading-relaxed text-ink-soft">
                 Anyone can verify seals with this key — no trust in this server
                 required. Fingerprint:{" "}
-                <code className="rounded bg-white px-1 py-0.5 font-mono text-[11px]">
+                <code className="bg-paper px-1 py-0.5 font-mono text-[11px] text-ink">
                   {fingerprint || "…"}
                 </code>
               </p>
@@ -235,7 +232,7 @@ export function BulletinRegistry() {
               <Button
                 variant="outline"
                 size="sm"
-                className="shrink-0"
+                className="shrink-0 font-semibold uppercase tracking-[0.12em]"
                 onClick={() => copyText(publicKey, "Public key")}
               >
                 <Copy className="mr-1.5 h-3.5 w-3.5" aria-hidden="true" />
@@ -247,17 +244,17 @@ export function BulletinRegistry() {
       </Card>
 
       <Tabs value={tab} onValueChange={(v) => setTab(v as RegistryTab)}>
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="registry">
-            <Newspaper className="mr-1.5 h-4 w-4" aria-hidden="true" />
+        <TabsList className="grid h-auto w-full grid-cols-3 gap-0 rounded-none border-b border-hairline bg-transparent p-0">
+          <TabsTrigger value="registry" className="rounded-none border-0 border-b-2 border-transparent px-2 py-2.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-ink-soft shadow-none transition-colors hover:text-navy data-[state=active]:bg-transparent data-[state=active]:text-navy data-[state=active]:shadow-none">
+            <Newspaper className="mr-1.5 h-3.5 w-3.5" aria-hidden="true" strokeWidth={1.75} />
             Registry
           </TabsTrigger>
-          <TabsTrigger value="publish">
-            <FileSignature className="mr-1.5 h-4 w-4" aria-hidden="true" />
+          <TabsTrigger value="publish" className="rounded-none border-0 border-b-2 border-transparent px-2 py-2.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-ink-soft shadow-none transition-colors hover:text-navy data-[state=active]:bg-transparent data-[state=active]:text-navy data-[state=active]:shadow-none">
+            <FileSignature className="mr-1.5 h-3.5 w-3.5" aria-hidden="true" strokeWidth={1.75} />
             Publish
           </TabsTrigger>
-          <TabsTrigger value="verify">
-            <ScanSearch className="mr-1.5 h-4 w-4" aria-hidden="true" />
+          <TabsTrigger value="verify" className="rounded-none border-0 border-b-2 border-transparent px-2 py-2.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-ink-soft shadow-none transition-colors hover:text-navy data-[state=active]:bg-transparent data-[state=active]:text-navy data-[state=active]:shadow-none">
+            <ScanSearch className="mr-1.5 h-3.5 w-3.5" aria-hidden="true" strokeWidth={1.75} />
             Verify
           </TabsTrigger>
         </TabsList>
@@ -268,13 +265,13 @@ export function BulletinRegistry() {
             <Card>
               <CardContent className="p-6 space-y-3">
                 {[0, 1, 2].map((i) => (
-                  <div key={i} className="h-20 animate-pulse rounded-lg bg-stone-100" />
+                  <div key={i} className="h-20 animate-pulse bg-paper" />
                 ))}
               </CardContent>
             </Card>
           ) : bulletins.length === 0 ? (
             <Card>
-              <CardContent className="p-8 text-center text-sm text-stone-500">
+              <CardContent className="p-8 text-center text-sm text-ink-soft">
                 The registry is empty — publish the first sealed bulletin.
               </CardContent>
             </Card>
@@ -283,13 +280,13 @@ export function BulletinRegistry() {
               <Card key={b.id}>
                 <CardHeader className="pb-2">
                   <div className="flex flex-wrap items-start justify-between gap-2">
-                    <CardTitle className="text-base leading-snug">
+                    <CardTitle className="font-serif text-lg font-semibold leading-snug text-navy">
                       {b.title}
                     </CardTitle>
                     <div className="flex items-center gap-2">
                       <ClassificationBadge value={b.classification} />
                       <BadgeCheck
-                        className="h-4 w-4 text-emerald-600"
+                        className="h-4 w-4 text-verify"
                         aria-label="Sealed"
                       />
                     </div>
@@ -299,21 +296,21 @@ export function BulletinRegistry() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  <p className="whitespace-pre-wrap text-sm leading-relaxed text-stone-700 line-clamp-4">
+                  <p className="whitespace-pre-wrap text-sm leading-[1.8] text-ink-soft line-clamp-4">
                     {b.body}
                   </p>
-                  <div className="grid gap-2 rounded-lg bg-stone-50 p-3 text-xs">
+                  <div className="grid gap-2 border border-hairline bg-paper p-3 text-xs">
                     <div className="flex flex-wrap items-baseline gap-x-2">
-                      <span className="font-semibold text-stone-600">SHA-256:</span>
-                      <code className="break-all font-mono text-[11px] text-stone-700">
+                      <span className="text-[9.5px] font-bold uppercase tracking-[0.16em] text-gold-ink">SHA-256</span>
+                      <code className="break-all font-mono text-[11px] text-ink">
                         {b.seal.hash}
                       </code>
                     </div>
                     <div className="flex flex-wrap items-baseline gap-x-2">
-                      <span className="font-semibold text-stone-600">
-                        Ed25519 signature:
+                      <span className="text-[9.5px] font-bold uppercase tracking-[0.16em] text-gold-ink">
+                        Ed25519 signature
                       </span>
-                      <code className="break-all font-mono text-[11px] text-stone-500">
+                      <code className="break-all font-mono text-[11px] text-ink-soft">
                         {b.seal.signature.slice(0, 72)}…
                       </code>
                     </div>
@@ -322,6 +319,7 @@ export function BulletinRegistry() {
                     <Button
                       size="sm"
                       variant="outline"
+                      className="font-semibold uppercase tracking-[0.12em]"
                       onClick={() => startVerify(b)}
                     >
                       <ShieldCheck className="mr-1.5 h-3.5 w-3.5" aria-hidden="true" />
@@ -351,7 +349,7 @@ export function BulletinRegistry() {
         <TabsContent value="publish" className="mt-4">
           <Card>
             <CardHeader>
-              <CardTitle className="text-base">
+              <CardTitle className="font-serif text-lg font-semibold text-navy">
                 Publish &amp; seal a bulletin
               </CardTitle>
               <CardDescription>
@@ -406,14 +404,14 @@ export function BulletinRegistry() {
                   onChange={(e) => setPubBody(e.target.value)}
                   placeholder="Full press release or crisis communication text (40–10,000 characters)…"
                 />
-                <p className="text-xs text-stone-500">
+                <p className="text-xs text-ink-soft">
                   {pubBody.trim().length.toLocaleString()} / 10,000 characters
                 </p>
               </div>
               <Button
                 onClick={publish}
                 disabled={publishing}
-                className="bg-emerald-700 text-white hover:bg-emerald-800"
+                className="px-5 font-bold uppercase tracking-[0.14em]"
               >
                 {publishing ? (
                   <>
@@ -435,7 +433,7 @@ export function BulletinRegistry() {
         <TabsContent value="verify" className="mt-4 space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle className="text-base">
+              <CardTitle className="font-serif text-lg font-semibold text-navy">
                 Verify authenticity of a communication
               </CardTitle>
               <CardDescription>
@@ -529,7 +527,7 @@ export function BulletinRegistry() {
                 <Button
                   onClick={() => runVerify(false)}
                   disabled={verifying}
-                  className="bg-emerald-700 text-white hover:bg-emerald-800"
+                  className="px-5 font-bold uppercase tracking-[0.14em]"
                 >
                   {verifying ? (
                     <>
@@ -547,6 +545,7 @@ export function BulletinRegistry() {
                   variant="outline"
                   onClick={() => runVerify(true)}
                   disabled={verifying || !verify.body}
+                  className="border-alert/40 font-semibold uppercase tracking-[0.12em] text-alert hover:bg-alert-soft hover:text-alert"
                 >
                   <ShieldAlert className="mr-2 h-4 w-4" aria-hidden="true" />
                   Simulate tampering (demo)
@@ -568,49 +567,49 @@ export function BulletinRegistry() {
             <Card
               className={
                 verdict.authentic
-                  ? "border-emerald-300 bg-emerald-50/60"
-                  : "border-red-300 bg-red-50/60"
+                  ? "border-verify/40 border-l-4 border-l-verify bg-verify-soft/50"
+                  : "border-alert/40 border-l-4 border-l-alert bg-alert-soft/50"
               }
             >
               <CardHeader className="pb-2">
-                <CardTitle className="flex items-center gap-2 text-base">
+                <CardTitle className="flex items-center gap-2.5 font-serif text-lg font-semibold text-navy">
                   {verdict.authentic ? (
                     <CheckCircle2
-                      className="h-5 w-5 text-emerald-600"
+                      className="h-5 w-5 text-verify"
                       aria-hidden="true"
                     />
                   ) : (
-                    <XCircle className="h-5 w-5 text-red-600" aria-hidden="true" />
+                    <XCircle className="h-5 w-5 text-alert" aria-hidden="true" />
                   )}
                   {verdict.authentic ? "Authentic" : "Not authentic"}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                <p className="text-sm font-medium leading-relaxed text-stone-800">
+                <p className="text-sm font-medium leading-relaxed text-ink">
                   {verdict.message}
                 </p>
                 <Separator />
                 <div className="grid gap-2 text-xs sm:grid-cols-2">
                   <p className="flex items-center gap-1.5">
                     {verdict.checks.hashMatch ? (
-                      <CheckCircle2 className="h-4 w-4 text-emerald-600" aria-hidden="true" />
+                      <CheckCircle2 className="h-4 w-4 text-verify" aria-hidden="true" />
                     ) : (
-                      <XCircle className="h-4 w-4 text-red-600" aria-hidden="true" />
+                      <XCircle className="h-4 w-4 text-alert" aria-hidden="true" />
                     )}
                     Digest recomputation:{" "}
                     <strong>{verdict.checks.hashMatch ? "match" : "mismatch"}</strong>
                   </p>
                   <p className="flex items-center gap-1.5">
                     {verdict.checks.signatureValid ? (
-                      <CheckCircle2 className="h-4 w-4 text-emerald-600" aria-hidden="true" />
+                      <CheckCircle2 className="h-4 w-4 text-verify" aria-hidden="true" />
                     ) : (
-                      <XCircle className="h-4 w-4 text-red-600" aria-hidden="true" />
+                      <XCircle className="h-4 w-4 text-alert" aria-hidden="true" />
                     )}
                     Signature check:{" "}
                     <strong>{verdict.checks.signatureValid ? "valid" : "invalid"}</strong>
                   </p>
                 </div>
-                <div className="rounded-lg bg-white/70 p-3 text-[11px] font-mono leading-relaxed text-stone-600">
+                <div className="border border-hairline bg-paper p-3 text-[11px] font-mono leading-relaxed text-ink-soft">
                   <p>recomputed: {verdict.details.recomputedHash}</p>
                   <p>provided: {verdict.details.providedHash}</p>
                   <p>key fp: {verdict.details.publicKeyFingerprint}</p>

@@ -46,6 +46,12 @@ function ProgrammeSeal({ className }: { className?: string }) {
   );
 }
 
+/**
+ * Source repository URL — after pushing to GitHub, set this to the live
+ * repository address (e.g. "https://github.com/<your-username>/sa-tr-sovereign-sandbox").
+ */
+const SOURCE_REPOSITORY_URL = "https://github.com/";
+
 export function Header() {
   return (
     <header>
@@ -83,11 +89,11 @@ export function Header() {
               Sandbox Build · v2.0
             </span>
             <a
-              href="https://github.com/"
+              href={SOURCE_REPOSITORY_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 border border-transparent px-1 py-0.5 text-[10px] font-medium uppercase tracking-[0.18em] text-[#93A3B8] transition-colors hover:text-gold-bright"
-              aria-label="Source repository (set your GitHub URL in header.tsx)"
+              aria-label="Source repository on GitHub"
             >
               <Github className="h-3.5 w-3.5" aria-hidden="true" />
               Source

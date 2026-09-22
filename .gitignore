@@ -62,3 +62,6 @@ Caddyfile
 examples/
 mini-services/
 tests/
+
+# workspace delivery artifacts (never part of the repository)
+/download/

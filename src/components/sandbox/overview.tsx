@@ -5,10 +5,12 @@ import {
   ArrowLeftRight,
   Building2,
   Fingerprint,
-  Handshake,
   Landmark,
   Languages,
+  Network,
   Newspaper,
+  Play,
+  Terminal,
 } from "lucide-react";
 import {
   Card,
@@ -79,16 +81,20 @@ export function Overview({ onJump }: { onJump: (tab: string) => void }) {
           buyers under AfCFTA guidelines.
         </p>
         <div className="mt-8 flex flex-wrap gap-3">
-          <button onClick={() => onJump("policy")} className={primaryBtn}>
+          <button onClick={() => onJump("console")} className={primaryBtn}>
+            <Play className="h-4 w-4" aria-hidden="true" />
+            Run the demonstration protocol
+          </button>
+          <button onClick={() => onJump("policy")} className={secondaryBtn}>
             <Languages className="h-4 w-4" aria-hidden="true" />
             Analyse a policy text
           </button>
           <button onClick={() => onJump("bulletins")} className={secondaryBtn}>
             Verify a bulletin
           </button>
-          <button onClick={() => onJump("trade")} className={secondaryBtn}>
-            <Handshake className="h-4 w-4" aria-hidden="true" />
-            Match trade partners
+          <button onClick={() => onJump("architecture")} className={secondaryBtn}>
+            <Network className="h-4 w-4" aria-hidden="true" />
+            Production architecture
           </button>
         </div>
       </section>
@@ -176,6 +182,76 @@ export function Overview({ onJump }: { onJump: (tab: string) => void }) {
               "AfCFTA alignment — matching framed by continental trade guidelines and certificate-of-origin readiness",
             ]}
           />
+        </div>
+      </section>
+
+      {/* ── Demonstration pathways ──────────────────────────────────── */}
+      <section aria-label="Demonstration pathways">
+        <SectionHeading
+          eyebrow="For the visiting delegation"
+          title="Two ways to witness the platform at work"
+          description="The console executes every capability live before your eyes; the architecture dossier documents exactly how the same system graduates to production."
+        />
+        <div className="mt-6 grid gap-4 md:grid-cols-2">
+          <Card className="border-hairline border-l-2 border-l-gold bg-card">
+            <CardContent className="p-6">
+              <div className="flex items-start justify-between gap-3">
+                <span className="bg-navy px-2 py-1 text-[9.5px] font-bold uppercase tracking-[0.2em] text-[#F2EFE7]">
+                  Live
+                </span>
+                <div className="border border-hairline p-1.5 text-navy-mid">
+                  <Terminal className="h-4 w-4" aria-hidden="true" strokeWidth={1.75} />
+                </div>
+              </div>
+              <h3 className="mt-4 font-serif text-lg font-semibold leading-snug text-navy">
+                Sandbox Console — five scenes, one protocol
+              </h3>
+              <div aria-hidden="true" className="mt-3 h-px w-10 bg-gold" />
+              <p className="mt-3 text-sm leading-relaxed text-ink-soft">
+                A guided protocol seals a state communiqué, verifies it,
+                stages an adversarial tampering attack and defeats it
+                cryptographically, then matches trade counterparties — while a
+                privileged command console and a live operations ledger record
+                every action.
+              </p>
+              <button
+                onClick={() => onJump("console")}
+                className="mt-5 inline-flex items-center gap-2 bg-gold px-4 py-2.5 text-[10.5px] font-bold uppercase tracking-[0.16em] text-navy-deep transition-colors hover:bg-gold-bright"
+              >
+                <Play className="h-3.5 w-3.5" aria-hidden="true" />
+                Open the console
+              </button>
+            </CardContent>
+          </Card>
+          <Card className="border-hairline border-l-2 border-l-gold bg-card">
+            <CardContent className="p-6">
+              <div className="flex items-start justify-between gap-3">
+                <span className="bg-navy px-2 py-1 text-[9.5px] font-bold uppercase tracking-[0.2em] text-[#F2EFE7]">
+                  Dossier
+                </span>
+                <div className="border border-hairline p-1.5 text-navy-mid">
+                  <Network className="h-4 w-4" aria-hidden="true" strokeWidth={1.75} />
+                </div>
+              </div>
+              <h3 className="mt-4 font-serif text-lg font-semibold leading-snug text-navy">
+                Architecture — the production pathway
+              </h3>
+              <div aria-hidden="true" className="mt-3 h-px w-10 bg-gold" />
+              <p className="mt-3 text-sm leading-relaxed text-ink-soft">
+                Six-tier deployment topology, the verified-communication
+                lifecycle, the environment matrix from sandbox to sovereign
+                production, the security and compliance model, the GitHub-to-
+                Vercel pipeline and the reliability posture — in full.
+              </p>
+              <button
+                onClick={() => onJump("architecture")}
+                className="mt-5 inline-flex items-center gap-2 border border-navy px-4 py-2.5 text-[10.5px] font-bold uppercase tracking-[0.16em] text-navy transition-colors hover:border-gold hover:text-gold-ink"
+              >
+                <Network className="h-3.5 w-3.5" aria-hidden="true" />
+                Read the dossier
+              </button>
+            </CardContent>
+          </Card>
         </div>
       </section>
 

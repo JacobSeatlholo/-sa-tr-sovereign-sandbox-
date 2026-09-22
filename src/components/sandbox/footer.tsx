@@ -43,6 +43,14 @@ export function Footer() {
                 <span className="font-semibold text-[#D3DBE5]">III — Cross-Border Trade Engine</span>
                 <span className="block text-[#7E8FA3]">SMME matchmaker under AfCFTA guidelines</span>
               </li>
+              <li className="border-l border-[#243B57] pl-3">
+                <span className="font-semibold text-[#D3DBE5]">IV — Live Demonstration Console</span>
+                <span className="block text-[#7E8FA3]">Five-scene protocol · privileged command terminal</span>
+              </li>
+              <li className="border-l border-[#243B57] pl-3">
+                <span className="font-semibold text-[#D3DBE5]">V — Production Pathway</span>
+                <span className="block text-[#7E8FA3]">System architecture · security · CI/CD · recovery</span>
+              </li>
             </ul>
           </div>
 
@@ -59,7 +67,8 @@ export function Footer() {
             </p>
             <p className="mt-3 text-xs leading-relaxed text-[#93A3B8]">
               Verification is stateless by design — no reliance on this server
-              is required to confirm authenticity.
+              is required to confirm authenticity. Every console and protocol
+              action is recorded in the operations ledger for official review.
             </p>
           </div>
         </div>

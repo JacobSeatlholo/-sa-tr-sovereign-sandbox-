@@ -8,7 +8,7 @@ import {
   SIGNING_ALGORITHM,
   DIGEST_ALGORITHM,
 } from "@/lib/pki";
-import { incrementVerifications } from "@/lib/store";
+import { incrementVerifications, recordEvent } from "@/lib/store";
 import type { VerificationResult } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
@@ -84,6 +84,18 @@ export async function POST(req: Request) {
   const hashMatch = recomputedHash === hash;
 
   incrementVerifications();
+
+  recordEvent(
+    hashMatch && signatureValid ? "VERIFY" : "VERIFY-FAIL",
+    hashMatch && signatureValid
+      ? "Authenticity confirmed — digest and signature verified"
+      : !hashMatch && signatureValid
+        ? "Tamper detected — recomputed digest does not match claimed hash"
+        : hashMatch && !signatureValid
+          ? "Signature check failed — digest matched but signature invalid"
+          : "Verification failed — digest and signature checks both failed",
+    `SHA-256 ${recomputedHash.slice(0, 16)}…`
+  );
 
   const result: VerificationResult = {
     authentic: hashMatch && signatureValid,

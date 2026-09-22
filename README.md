@@ -1,4 +1,4 @@
-# 🇿🇦⇄🇹🇷 SA–Türkiye Sovereign AI & Digital Trade Sandbox
+# SA–Türkiye Sovereign AI & Digital Trade Sandbox
 
 **Phase 1 Proof-of-Concept** of the *Joint South Africa–Türkiye Bilateral AI & Digital Trade Engine* — the software platform proposed by Business Hustle (Simple Eternity Holdings (Pty) Ltd) to the Directorate of Communications (Presidency of Türkiye) and the Embassy of the Republic of Türkiye, following the STRATCOM Roundtable in Johannesburg.
 
@@ -15,6 +15,8 @@
 | **1 · Diplomatic Knowledge Hub** | Automated TR↔EN policy extraction, translation & structured **commitment tracking** powered by an LLM pipeline | `Policy Intelligence` tab → `POST /api/policy/analyze` |
 | **1 · Information Integrity Engine** | **SHA-256 digest hashing + Ed25519 PKI digital signing** of press bulletins; media & citizens verify authentic state communications against AI deepfakes — verification is *stateless*, no trust in the server required | `Bulletin Verification` tab → `POST /api/bulletins`, `POST /api/verify` |
 | **2 · Cross-Border Trade Matchmaker** | Semantic **cosine-similarity matching** of South African SMMEs with Turkish enterprise buyers under **AfCFTA** guidelines (MVP in-process TF-IDF vectors; pgvector in Phase 2) | `Trade Matchmaker` tab → `POST /api/trade/match` |
+| **Live Demonstration Console** | Five-scene **Demonstration Protocol** (analyse → seal → verify → adversarial tamper drill → trade match) executing the real pipelines; a privileged **command terminal** (`seal`, `verify`, `tamper`, `analyze`, `match`, `status`, `keyinfo`) and a **live operations ledger** recording every server-side action | `Sandbox Console` tab → `POST /api/console`, `GET /api/events` |
+| **Architecture & Production Pathway** | Six-tier deployment topology, verified-communication lifecycle, sandbox→production environment matrix, security & compliance model (POPIA · GDPR · KVKK · AfCFTA), GitHub→Vercel CI/CD pipeline, reliability & DR posture, readiness checklist | `Architecture` tab |
 
 Also included: an executive **Overview dashboard** (live metrics, roadmap & investment framework, coalition ecosystem matrix) and a health endpoint.
 
@@ -95,17 +97,31 @@ Then connect the Vercel project to a GitHub repo from its dashboard (Git → Con
 | `POST` | `/api/verify` | Stateless verification: `{ title, issuer, classification, body, publishedAt, hash, signature }` (or raw `canonical`) → `authentic` verdict |
 | `GET` | `/api/trade/companies` | Registry with `?country=ZA\|TR&sector=&q=` filters |
 | `POST` | `/api/trade/match` | `{ companyId }` or `{ query }` → ranked cross-corridor counterparties |
+| `POST` | `/api/console` | Privileged command interpreter — `{ command }` → typed output lines executing real backends (seal · verify · tamper · analyze · match · status · keyinfo · list · events) |
+| `GET` | `/api/events` | Operations ledger (append-only audit stream, newest first) + platform telemetry |
+
+## Repository deployment apparatus
+
+The repository ships production-ready, so **connecting GitHub to Vercel is a two-click operation**:
+
+| Artefact | Purpose |
+|---|---|
+| `.github/workflows/ci.yml` | CI gate on every push/PR — install · Prisma generate · lint · typecheck · production build |
+| `vercel.json` | Hardened security headers (HSTS, `X-Frame-Options: DENY`, `nosniff`, referrer & permissions policy) + `no-store` on API responses |
+| `.env.example` | Documented environment template incl. key-generation instructions |
 
 ## Architecture
 
 ```
 Next.js 16 (App Router) + TypeScript
 ├─ src/lib/pki.ts        Information Integrity Engine — SHA-256 + Ed25519 (node:crypto)
+├─ src/lib/policy.ts     Diplomatic Policy Indexer — shared TR↔EN analysis pipeline
 ├─ src/lib/matching.ts   TF-IDF vector space + cosine similarity (pgvector upgrade path)
 ├─ src/lib/ai.ts         LLM wrapper w/ env-var bootstrap for serverless
-├─ src/lib/store.ts      In-memory registry (stateless-friendly; re-seeds on cold start)
+├─ src/lib/store.ts      In-memory registry + operations ledger (re-seeds on cold start)
 ├─ src/lib/seed-data.ts  Demo companies + pre-sealed bulletins (self-verifying)
-└─ src/app/api/*         Route handlers (see API reference)
+├─ src/app/api/*         Route handlers (see API reference)
+└─ src/components/sandbox/*  Dashboard sections incl. console.tsx + architecture.tsx
 ```
 
 **Why stateless?** Every seal is self-verifying — verification recomputes the SHA-256 digest and checks the Ed25519 signature against the public key, so the platform's core promise (information integrity) never depends on a database. Registries persist in-process per serverless instance and re-seed deterministically on cold starts.
@@ -120,5 +136,8 @@ Next.js 16 (App Router) + TypeScript
 
 1. **Database** — swap `src/lib/store.ts` for PostgreSQL (e.g. Neon) with `pgvector`; replace the TF-IDF module in `src/lib/matching.ts` with embedding-based cosine similarity (`<=>` operator) — the API contract stays identical.
 2. **Civic data** — live ingestion from OpenTender ZA and BlackBiz registries.
-3. **Compliance** — POPIA/GDPR hardening, audit logging, multi-tenant tenancy per the approved proposal.
+3. **Compliance** — POPIA/GDPR hardening, append-only audit ledger persistence, multi-tenant tenancy per the approved proposal.
 4. **Key custody** — HSM-backed signing service per the proposal's "Isolated HSM" infrastructure layer.
+5. **Identity** — NextAuth SSO with ministry-scoped RBAC and MFA.
+
+The full delta is documented in-app under **Architecture → VII — Production readiness checklist**.

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { matchCounterparties } from "@/lib/matching";
+import { recordEvent } from "@/lib/store";
 
 export const dynamic = "force-dynamic";
 
@@ -31,6 +32,17 @@ export async function POST(req: Request) {
     query,
     limit,
   });
+
+  recordEvent(
+    "MATCH",
+    source
+      ? `Trade match — source “${source.name}” · ${matches.length} counterparties ranked`
+      : `Trade match — query “${query?.slice(0, 60)}” · ${matches.length} counterparties ranked`,
+    matches
+      .slice(0, 3)
+      .map((m) => `${m.company.name} (${m.score})`)
+      .join(" · ")
+  );
 
   if (!source && (!matches || matches.length === 0)) {
     return NextResponse.json(

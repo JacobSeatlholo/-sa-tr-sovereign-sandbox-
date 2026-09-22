@@ -75,12 +75,12 @@ export function Header() {
               Sovereign AI &amp; Digital Trade Sandbox
             </p>
             <p className="mt-1 hidden text-[11px] font-medium tracking-[0.08em] text-[#93A3B8] sm:block">
-              Diplomatic Intelligence · Information Integrity · Cross-Border Trade Execution
+              Diplomatic Intelligence · Information Integrity · Trade Execution · Live Demonstration
             </p>
           </div>
           <div className="hidden shrink-0 flex-col items-end gap-2.5 md:flex">
             <span className="border border-[#3A506B] px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.2em] text-[#9FB0C5]">
-              Sandbox Build · v1.0
+              Sandbox Build · v2.0
             </span>
             <a
               href="https://github.com/"

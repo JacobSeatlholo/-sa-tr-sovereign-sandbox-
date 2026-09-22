@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { sealBulletin, canonicalBulletin, SIGNING_ALGORITHM } from "@/lib/pki";
-import { addBulletin, listBulletins } from "@/lib/store";
+import { addBulletin, listBulletins, recordEvent } from "@/lib/store";
 import type { Bulletin, BulletinClassification } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
@@ -83,6 +83,11 @@ export async function POST(req: Request) {
   };
 
   addBulletin(bulletin);
+  recordEvent(
+    "SEAL",
+    `Bulletin sealed — “${title}”`,
+    `${bulletin.id} · ${classification} · SHA-256 ${bulletin.seal.hash.slice(0, 16)}…`
+  );
 
   return NextResponse.json(
     {

@@ -6,6 +6,8 @@ import {
   LayoutDashboard,
   Languages,
   ScanSearch,
+  Terminal,
+  Network,
 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Header } from "@/components/sandbox/header";
@@ -14,14 +16,29 @@ import { Overview } from "@/components/sandbox/overview";
 import { PolicyIntelligence } from "@/components/sandbox/policy-intelligence";
 import { BulletinRegistry } from "@/components/sandbox/bulletin-registry";
 import { TradeMatchmaker } from "@/components/sandbox/trade-matchmaker";
+import { SandboxConsole } from "@/components/sandbox/console";
+import { Architecture } from "@/components/sandbox/architecture";
 
-type TabKey = "overview" | "policy" | "bulletins" | "trade";
+type TabKey =
+  | "overview"
+  | "policy"
+  | "bulletins"
+  | "trade"
+  | "console"
+  | "architecture";
 
-const NAV: { key: TabKey; numeral: string; label: string; icon: typeof Languages }[] = [
+const NAV: {
+  key: TabKey;
+  numeral: string;
+  label: string;
+  icon: typeof Languages;
+}[] = [
   { key: "overview", numeral: "I", label: "Overview", icon: LayoutDashboard },
   { key: "policy", numeral: "II", label: "Policy Intelligence", icon: Languages },
   { key: "bulletins", numeral: "III", label: "Bulletin Verification", icon: ScanSearch },
   { key: "trade", numeral: "IV", label: "Trade Matchmaker", icon: ArrowLeftRight },
+  { key: "console", numeral: "V", label: "Sandbox Console", icon: Terminal },
+  { key: "architecture", numeral: "VI", label: "Architecture", icon: Network },
 ];
 
 export default function Home() {
@@ -36,11 +53,15 @@ export default function Home() {
     <div className="flex min-h-screen flex-col bg-paper">
       <Header />
 
-      <Tabs value={tab} onValueChange={(v) => setTab(v as TabKey)} className="flex flex-1 flex-col">
+      <Tabs
+        value={tab}
+        onValueChange={(v) => setTab(v as TabKey)}
+        className="flex flex-1 flex-col"
+      >
         {/* Index bar — sticky, document-style */}
         <div className="sticky top-0 z-40 border-b border-hairline bg-[#FBFAF5]/95 backdrop-blur-sm">
           <div className="mx-auto w-full max-w-6xl px-4">
-            <TabsList className="grid h-auto w-full grid-cols-2 gap-0 rounded-none bg-transparent p-0 sm:grid-cols-4">
+            <TabsList className="grid h-auto w-full grid-cols-2 gap-0 rounded-none bg-transparent p-0 sm:grid-cols-3 lg:grid-cols-6">
               {NAV.map((item) => (
                 <TabsTrigger
                   key={item.key}
@@ -79,6 +100,12 @@ export default function Home() {
           </TabsContent>
           <TabsContent value="trade" className="mt-0">
             <TradeMatchmaker />
+          </TabsContent>
+          <TabsContent value="console" className="mt-0">
+            <SandboxConsole />
+          </TabsContent>
+          <TabsContent value="architecture" className="mt-0">
+            <Architecture />
           </TabsContent>
         </main>
       </Tabs>

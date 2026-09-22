@@ -50,7 +50,7 @@ function ProgrammeSeal({ className }: { className?: string }) {
  * Source repository URL — after pushing to GitHub, set this to the live
  * repository address (e.g. "https://github.com/<your-username>/sa-tr-sovereign-sandbox").
  */
-const SOURCE_REPOSITORY_URL = "https://github.com/";
+const SOURCE_REPOSITORY_URL = "https://github.com/JacobSeatlholo/-sa-tr-sovereign-sandbox-";
 
 export function Header() {
   return (
